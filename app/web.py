@@ -32,7 +32,7 @@ class Chrome:
         self.driver = uc.Chrome(use_subprocess=True, options=options)
         self.driver.get(url)
         self.driver.maximize_window()
-        time.sleep(10)
+        time.sleep(15)
         print(self.driver.page_source)
         self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
         time.sleep(3)
