@@ -21,7 +21,7 @@ class Telegram:
 
     def get_code(self):
         url = f'https://api.telegram.org/bot{self.bot_token}/getUpdates'
-        for attempt in range(10):
+        for attempt in range(100):
             response = requests.get(url)
             data = response.json()
             if len(data['result']) == 0:

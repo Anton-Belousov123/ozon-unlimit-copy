@@ -8,8 +8,9 @@ from app.telegram import Telegram
 
 
 class Chrome:
+    driver = None
     def __init__(self):
-        self.driver = self._login()
+        self._login()
 
     def scrape_product(self, product_id: int) -> dict:
         page_source = self._get_source(product_id)
@@ -17,6 +18,7 @@ class Chrome:
         return characteristics
 
     def _get_source(self, product_id: int):
+        print("Получение источника")
         self.driver.get(f'https://seller.ozon.ru/app/products/{product_id}/edit/preview')
         time.sleep(5)
         return self.driver.page_source
@@ -27,20 +29,23 @@ class Chrome:
         url = 'https://seller.ozon.ru/app/products?filter=all'
         options = uc.ChromeOptions()
         options.headless = True
-        driver = uc.Chrome(use_subprocess=True, options=options)
-        driver.get(url)
-        driver.maximize_window()
+        self.driver = uc.Chrome(use_subprocess=True, options=options)
+        self.driver.get(url)
+        self.driver.maximize_window()
+        time.sleep(10)
+        self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
         time.sleep(3)
-        driver.find_element(By.CLASS_NAME, 'button-module_text_2lz6v').click()
-        time.sleep(3)
-        driver.find_element(By.NAME, 'autocomplete').send_keys('9870739395')
-        driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
+        self.driver.find_element(By.NAME, 'autocomplete').send_keys('9870739395')
+        self.driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
         time.sleep(3)
         telegram.send_message()
-        driver.find_element(By.NAME, 'otp').send_keys(telegram.get_code())  # TODO: Telegram Auth
+        self.driver.find_element(By.NAME, 'otp').send_keys(telegram.get_code())  # TODO: Telegram Auth
         time.sleep(5)
-        return driver
-
+        self.driver.find_element(By.XPATH, '//span[text()="NKM"]').click()
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, '//div[text()="Lubrens"]').click()
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, '//span[text()="Переключиться"]').click()
     def _scrape_page_source(self, page_source: str) -> dict:
         soup = BeautifulSoup(page_source, features='html.parser')
         soup = soup.find('div', {'schema': '[object Object]'}).find_all('div')[1::]
