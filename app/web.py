@@ -33,12 +33,17 @@ class Chrome:
         options.add_argument('--enable-javascript')
         options.add_argument('--disable-gpu')
         options.add_argument("--incognito")
-        self.driver = uc.Chrome(use_subprocess=True, options=options)
-        self.driver.get(url)
-        self.driver.maximize_window()
-        time.sleep(20)
-        self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
-        time.sleep(5)
+        while True:
+            try:
+                self.driver = uc.Chrome(use_subprocess=True, options=options)
+                self.driver.get(url)
+                self.driver.maximize_window()
+                time.sleep(5)
+                self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
+                time.sleep(5)
+            except:
+                continue
+            break
         self.driver.find_element(By.NAME, 'autocomplete').send_keys('9870739395')
         self.driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
         time.sleep(5)
