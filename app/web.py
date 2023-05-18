@@ -27,21 +27,21 @@ class Chrome:
         telegram = Telegram()
         item_url = 'https://seller.ozon.ru/app/products/483801974/edit/preview'
         url = 'https://seller.ozon.ru/app/products?filter=all'
-        options = uc.ChromeOptions()
-        options.add_argument('--no-sandbox')
-        #options.add_argument('--headless')
-        options.add_argument('--enable-javascript')
-        options.add_argument('--disable-gpu')
-        #options.add_argument("--incognito")
+
         while True:
+            options = uc.ChromeOptions()
+            options.add_argument('--no-sandbox')
+            options.add_argument('--enable-javascript')
+            options.add_argument('--disable-gpu')
+            self.driver = uc.Chrome(use_subprocess=True, options=options)
             try:
-                self.driver = uc.Chrome(use_subprocess=True, options=options)
                 self.driver.get(url)
                 self.driver.maximize_window()
                 time.sleep(10)
                 self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
                 time.sleep(5)
             except Exception as e:
+                self.driver.close()
                 print(e)
                 continue
             break
