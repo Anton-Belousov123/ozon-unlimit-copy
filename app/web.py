@@ -32,6 +32,7 @@ class Chrome:
         options.add_argument('--headless')
         options.add_argument('--enable-javascript')
         options.add_argument('--disable-gpu')
+        options.add_argument("--incognito")
         self.driver = uc.Chrome(use_subprocess=True, options=options)
         self.driver.get(url)
         self.driver.maximize_window()
