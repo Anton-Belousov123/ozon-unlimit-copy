@@ -41,7 +41,8 @@ class Chrome:
                 time.sleep(10)
                 self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
                 time.sleep(5)
-            except:
+            except Exception as e:
+                print(e)
                 continue
             break
         self.driver.find_element(By.NAME, 'autocomplete').send_keys('9870739395')
