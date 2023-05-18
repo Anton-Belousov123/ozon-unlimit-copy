@@ -33,6 +33,7 @@ class Chrome:
         self.driver.get(url)
         self.driver.maximize_window()
         time.sleep(10)
+        print(self.driver.page_source)
         self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
         time.sleep(3)
         self.driver.find_element(By.NAME, 'autocomplete').send_keys('9870739395')
