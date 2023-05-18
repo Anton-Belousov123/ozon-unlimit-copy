@@ -28,11 +28,11 @@ class Chrome:
         item_url = 'https://seller.ozon.ru/app/products/483801974/edit/preview'
         url = 'https://seller.ozon.ru/app/products?filter=all'
         options = uc.ChromeOptions()
-        options.headless = True
+        #options.headless = True
         self.driver = uc.Chrome(use_subprocess=True, options=options)
         self.driver.get(url)
         self.driver.maximize_window()
-        time.sleep(15)
+        time.sleep(10)
         print(self.driver.page_source)
         self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
         time.sleep(3)
