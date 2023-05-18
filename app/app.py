@@ -85,12 +85,12 @@ def start():
             if upload_status is False:
                 print('Режим ручной загрузки')
                 while True:
-                    #try:
-                    if True:
+                    try:
+                    #if True:
                         characteristics_from_web: dict = chrome.scrape_product(new_product_id)
-                    #except:
-                    #    chrome = Chrome()
-                    #    continue
+                    except:
+                        chrome = Chrome()
+                        continue
                     break
                 print("WEB CHARACTERISTIC PARSED!!!")
                 characteristics_from_api: dict = api.scrape_product(new_product_id)

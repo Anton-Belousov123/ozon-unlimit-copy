@@ -32,13 +32,13 @@ class Chrome:
         options.add_argument('--headless')
         options.add_argument('--enable-javascript')
         options.add_argument('--disable-gpu')
-        options.add_argument("--incognito")
+        #options.add_argument("--incognito")
         while True:
             try:
                 self.driver = uc.Chrome(use_subprocess=True, options=options)
                 self.driver.get(url)
                 self.driver.maximize_window()
-                time.sleep(5)
+                time.sleep(10)
                 self.driver.find_element(By.XPATH, '//span[text()="Войти"]').click()
                 time.sleep(5)
             except:
