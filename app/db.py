@@ -17,7 +17,7 @@ def get_code():
     conn.close()
     if not record:
         return None
-    return record[0], record[1], record[11]
+    return record[0], record[1], record[11], record[3]
 
 
 def update_status(article):

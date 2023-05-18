@@ -9,7 +9,7 @@ from app.api import Api
 from app.web import Chrome
 
 
-def prepare_data_to_upload(ch_w: dict, ch_a: dict, at: list[dict], name, article) -> dict:
+def prepare_data_to_upload(ch_w: dict, ch_a: dict, at: list[dict], name, article, image) -> dict:
     data = {
         'items': [
             {
@@ -18,12 +18,7 @@ def prepare_data_to_upload(ch_w: dict, ch_a: dict, at: list[dict], name, article
                 'depth': ch_w['depth'],
                 'dimension_unit': 'mm',
                 'height': ch_w['height'],
-                'images': ['https://ir.ozone.ru/s3/multimedia-t/6382045493.jpg',
-                           'https://ir.ozone.ru/s3/multimedia-l/6332904873.jpg',
-                           'https://ir.ozone.ru/s3/multimedia-m/6332904874.jpg',
-                           'https://ir.ozone.ru/s3/multimedia-k/6332904872.jpg',
-                           'https://ir.ozone.ru/s3/multimedia-p/6332904877.jpg',
-                           'https://ir.ozone.ru/s3/multimedia-j/6332904871.jpg'],
+                'images': [image],
                 'name': name,#ch_w['Название'],
                 'offer_id': "РСВ-" + str(article) + "РСВ-" + str(article),
                 'price': "5000",
@@ -85,7 +80,7 @@ def start():
     api = Api()
     while True:
         try:
-            product_id, name, sku = db.get_code()
+            product_id, name, sku, image1 = db.get_code()
             upload_status, new_product_id = api.test_upload(product_id, name, sku)
             if upload_status is False:
                 print('Режим ручной загрузки')
@@ -109,7 +104,8 @@ def start():
                     ch_a=characteristics_from_api,
                     at=attrubute_names,
                     name=name,
-                    article=product_id
+                    article=product_id,
+                    image=image1
                 )
                 print('DATA PREPARED!!!')
                 api.upload_item(prepared_data)
