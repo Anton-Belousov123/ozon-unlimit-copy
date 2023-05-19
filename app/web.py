@@ -36,13 +36,15 @@ class Chrome:
             try:
                 self.driver.get('https://seller.ozon.ru/app/registration/signin?auth=1')
                 self.driver.maximize_window()
-                time.sleep(100)
+                time.sleep(10)
                 self.driver.find_element(By.XPATH, '//div[text()="Lubrens"]').click()
                 time.sleep(2)
                 self.driver.find_element(By.XPATH, '//span[text()="Далее"]').click()
                 time.sleep(3)
-                self.driver.find_element(By.XPATH, '//span[text()="Переключиться"]').click()
-
+                try:
+                    self.driver.find_element(By.XPATH, '//span[text()="Переключиться"]').click()
+                except:
+                    pass
             except Exception as e:
                 print(e)
                 self.driver.close()
