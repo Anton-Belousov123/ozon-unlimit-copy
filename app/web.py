@@ -36,7 +36,7 @@ class Chrome:
             try:
                 self.driver.get('https://seller.ozon.ru/app/registration/signin?auth=1')
                 self.driver.maximize_window()
-                time.sleep(10)
+                time.sleep(100)
                 self.driver.find_element(By.XPATH, '//div[text()="Lubrens"]').click()
                 time.sleep(2)
                 self.driver.find_element(By.XPATH, '//span[text()="Далее"]').click()
