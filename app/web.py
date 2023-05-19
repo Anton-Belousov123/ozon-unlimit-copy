@@ -23,7 +23,32 @@ class Chrome:
         time.sleep(5)
         return self.driver.page_source
 
+
     def _login(self):
+        while True:
+            options = uc.ChromeOptions()
+            options.add_argument('--no-sandbox')
+            options.add_argument('--enable-javascript')
+            options.add_argument('--disable-gpu')
+            options.add_argument("--user-data-dir=profile1/")
+
+            self.driver = uc.Chrome(use_subprocess=True, options=options)
+            try:
+                self.driver.get('https://seller.ozon.ru/app/registration/signin?auth=1')
+                self.driver.maximize_window()
+                time.sleep(10)
+                self.driver.find_element(By.XPATH, '//div[text()="Lubrens"]').click()
+                time.sleep(2)
+                self.driver.find_element(By.XPATH, '//span[text()="Далее"]').click()
+                time.sleep(3)
+                self.driver.find_element(By.XPATH, '//span[text()="Переключиться"]').click()
+
+            except Exception as e:
+                print(e)
+                self.driver.close()
+                continue
+            break
+    def _old_login(self):
         telegram = Telegram()
         item_url = 'https://seller.ozon.ru/app/products/483801974/edit/preview'
         url = 'https://seller.ozon.ru/app/products?filter=all'
@@ -33,6 +58,8 @@ class Chrome:
             options.add_argument('--no-sandbox')
             options.add_argument('--enable-javascript')
             options.add_argument('--disable-gpu')
+            options.add_argument("--user-data-dir=profile1/")
+
             self.driver = uc.Chrome(use_subprocess=True, options=options)
             try:
                 self.driver.get(url)
