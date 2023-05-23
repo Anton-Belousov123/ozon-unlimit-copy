@@ -5,6 +5,16 @@ import requests
 
 from secrets import env_info
 
+headers2 = {
+    'Client-Id': '667260',
+    'Api-Key': '835f30d9-7159-4956-97f0-5f6353f93aab'
+}  # Kamran upload
+
+headers2 = {
+    'Client-Id': '1131161',
+    'Api-Key': '74f9218c-ab62-4915-8fd1-b6a953a32842'
+}
+
 
 class Api:
     def __init__(self):
@@ -44,10 +54,8 @@ class Api:
         return True, 0
 
     def upload_to_main(self, article, name, sku):
-        headers = {
-            'Client-Id': '667260',
-            'Api-Key': '835f30d9-7159-4956-97f0-5f6353f93aab'
-        }
+
+
         url = 'https://api-seller.ozon.ru/v1/product/import-by-sku'
         data = {
             "items": [
@@ -63,7 +71,7 @@ class Api:
                 }
             ]
         }
-        response = requests.post(url, headers=headers, data=json.dumps(data)).json()
+        response = requests.post(url, headers=headers2, data=json.dumps(data)).json()
 
 
     def scrape_product(self, product_id: int) -> dict:
@@ -112,12 +120,8 @@ class Api:
         return result['result']
 
     def upload_item(self, data: dict):
-        headers = {
-            'Client-Id': '667260',
-            'Api-Key': '835f30d9-7159-4956-97f0-5f6353f93aab'
-        }
         response = requests.post(url='https://api-seller.ozon.ru/v2/product/import',
-                                 headers=headers,
+                                 headers=headers2,
                                  data=json.dumps(data)).json()['result']
         return response
 
