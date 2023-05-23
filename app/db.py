@@ -2,7 +2,7 @@ import psycopg2
 
 from secrets import secret
 
-table_name = 'kamran'
+table_name = 'oleg'
 def get_code():
     conn = psycopg2.connect(
         host=secret.DATABASE_HOST,
