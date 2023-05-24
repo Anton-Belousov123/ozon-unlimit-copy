@@ -75,7 +75,10 @@ def get_attributes(ch_a, web_data, api_data, api):
     )
     return atrs
 
+
 def start():
+    with_error = 0
+    with_success = 0
     chrome = Chrome()
     api = Api()
     while True:
@@ -83,7 +86,6 @@ def start():
             product_id, name, sku, image1 = db.get_code()
             upload_status, new_product_id = api.test_upload(product_id, name, sku)
             if upload_status is False:
-                print('Режим ручной загрузки')
                 while True:
                     try:
                     #if True:
@@ -92,13 +94,9 @@ def start():
                         chrome = Chrome()
                         continue
                     break
-                print("WEB CHARACTERISTIC PARSED!!!")
                 characteristics_from_api: dict = api.scrape_product(new_product_id)
-                print("CHARACTERISTIC PARSED!!!")
                 attribute_names_from_api: dict = api.scrape_attribute_names(category_id=characteristics_from_api['category_id'])
-                print("ATRIBUTES PARSED!!!")
                 attrubute_names = get_attributes(attribute_names_from_api, characteristics_from_web, characteristics_from_api, api)
-                print("ATRIBUTES GETTED!")
                 prepared_data: dict = prepare_data_to_upload(
                     ch_w=characteristics_from_web,
                     ch_a=characteristics_from_api,
@@ -107,16 +105,18 @@ def start():
                     article=product_id,
                     image=image1
                 )
-                print('DATA PREPARED!!!')
                 api.upload_item(prepared_data)
-                print('UPLOADED!!!')
             else:
                 api.upload_to_main(product_id, name, sku)
+            with_success += 1
         except Exception as e:
-            print(e)
-            print("EXception add")
+            with_error += 1
+            db.set_error_status(product_id)
         try:
             db.update_status(product_id)
         except:
             print("Exception update db")
             time.sleep(30)
+        with open('info.txt', 'w', encoding="UTF-8") as f:
+            f.write(f'Success: {with_success}, Error: {with_error}')
+        f.close()
