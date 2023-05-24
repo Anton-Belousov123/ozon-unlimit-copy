@@ -84,6 +84,11 @@ def start():
     while True:
         try:
             product_id, name, sku, image1 = db.get_code()
+        except:
+            print('На данный момент товаров нет в очереди')
+            time.sleep(30)
+            continue
+        try:
             upload_status, new_product_id = api.test_upload(product_id, name, sku)
             if upload_status is False:
                 while True:
