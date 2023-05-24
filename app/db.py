@@ -20,6 +20,20 @@ def get_code():
     return record[0], record[1], record[11], record[3]
 
 
+def set_error_status(article):
+
+    conn = psycopg2.connect(
+        host=secret.DATABASE_HOST,
+        database=secret.DATABASE_NAME,
+        user=secret.DATABASE_LOGIN,
+        password=secret.DATABASE_PASSWORD,
+    )
+    cur = conn.cursor()
+
+    cur.execute(f"UPDATE {table_name} SET stage=%s WHERE s_article=%s", ("add_error_ozon", str(article)))
+    conn.commit()
+    conn.close()
+
 def update_status(article):
 
     conn = psycopg2.connect(
